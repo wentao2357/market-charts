@@ -37,6 +37,11 @@ jobs:
       - name: Fetch market data
         run: python scripts/fetch_data.py
 
+      - name: Probe symbols (temporary)
+        if: hashFiles('config/probe.txt') != ''
+        continue-on-error: true
+        run: python scripts/probe.py
+
       - name: Commit data
         run: |
           git config user.name "market-charts bot"
