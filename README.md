@@ -21,7 +21,7 @@ GitHub Actions 每天 22:35 UTC（香港时间早上 6:35）自动抓一次收�
 ## 文件
 
 - `index.html`：页面（读取 `data/market.json`）
-- `scripts/fetch_data.py`：抓数据脚本（Yahoo Finance + FRED）
+- `scripts/fetch_data.py`：抓数据脚本（Yahoo Finance、美国财政部、纽约联储）
 - `config/universe.json`：图表清单
 - `.github/workflows/update.yml`：每日定时任务
 

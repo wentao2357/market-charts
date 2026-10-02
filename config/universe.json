@@ -306,8 +306,8 @@
     },
     {
       "id": "rates",
-      "title": "美债利率与信用",
-      "question": "流动性在收紧还是放松？涨的是实际利率还是通胀预期？信用有没有出事？",
+      "title": "美债利率",
+      "question": "流动性在收紧还是放松？涨的是实际利率还是通胀预期？曲线在陡峭化还是平坦化？",
       "series": [
         {
           "id": "US3M",
@@ -391,20 +391,6 @@
           "src": "nyfed",
           "fred": "SOFR",
           "kind": "rate"
-        },
-        {
-          "id": "HYOAS",
-          "name": "高收益债利差",
-          "src": "fred",
-          "sym": "BAMLH0A0HYM2",
-          "kind": "rate"
-        },
-        {
-          "id": "IGOAS",
-          "name": "投资级债利差",
-          "src": "fred",
-          "sym": "BAMLC0A0CM",
-          "kind": "rate"
         }
       ]
     },
@@ -467,15 +453,6 @@
           "name": "欧元/美元",
           "sym": "EURUSD=X",
           "fred": "DEXUSEU"
-        },
-        {
-          "id": "USDCNH",
-          "name": "美元/离岸人民币",
-          "sym": "USDCNH=X",
-          "alt": [
-            "CNH=X"
-          ],
-          "note": "上升 = 人民币走弱"
         },
         {
           "id": "USDCNY",
