@@ -397,7 +397,7 @@
     {
       "id": "credit",
       "title": "信用",
-      "question": "信用通常比股市先出问题：垃圾债、杠杆贷款、私募信贷有没有掉队？",
+      "question": "信用通常比股市先出问题：美欧垃圾债、杠杆贷款、私募信贷、CDS 指数有没有掉队？",
       "series": [
         {
           "id": "HYG",
@@ -430,6 +430,27 @@
           "id": "EMB",
           "name": "新兴市场美元债",
           "sym": "EMB"
+        },
+        {
+          "id": "ITXXO",
+          "name": "iTraxx 欧洲 Crossover",
+          "sym": "XTXC.DE",
+          "alt": [
+            "XTXC.MI",
+            "XTXC.F"
+          ],
+          "note": "Xtrackers 卖出保护 ETF（总回报）。下跌 = 欧洲高收益 CDS 利差走阔"
+        },
+        {
+          "id": "ITXMAIN",
+          "name": "iTraxx 欧洲 Main",
+          "sym": "DXSQ.DE",
+          "alt": [
+            "XTXE.MI",
+            "XTXE.F",
+            "DXSQ.F"
+          ],
+          "note": "Xtrackers 卖出保护 ETF（总回报）。下跌 = 欧洲投资级 CDS 利差走阔"
         }
       ]
     },
@@ -745,6 +766,13 @@
       "num": "BIZD",
       "den": "HYG",
       "question": "私募信贷是否比公开市场先出问题"
+    },
+    {
+      "id": "R_EUQUAL",
+      "name": "欧洲 Crossover / Main",
+      "num": "ITXXO",
+      "den": "ITXMAIN",
+      "question": "欧洲 CDS 市场的信用质量偏好：下行 = 高收益利差相对走阔"
     },
     {
       "id": "R_STKBND",
