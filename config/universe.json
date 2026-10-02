@@ -395,9 +395,48 @@
       ]
     },
     {
+      "id": "credit",
+      "title": "信用",
+      "question": "信用通常比股市先出问题：垃圾债、杠杆贷款、私募信贷有没有掉队？",
+      "series": [
+        {
+          "id": "HYG",
+          "name": "高收益债 (iShares)",
+          "sym": "HYG"
+        },
+        {
+          "id": "JNK",
+          "name": "高收益债 (SPDR)",
+          "sym": "JNK"
+        },
+        {
+          "id": "LQD",
+          "name": "投资级公司债",
+          "sym": "LQD"
+        },
+        {
+          "id": "BKLN",
+          "name": "杠杆贷款",
+          "sym": "BKLN",
+          "note": "浮动利率，对加息不敏感，主要反映违约担忧"
+        },
+        {
+          "id": "BIZD",
+          "name": "私募信贷 (BDC)",
+          "sym": "BIZD",
+          "note": "商业发展公司，私募信贷压力的公开市场窗口"
+        },
+        {
+          "id": "EMB",
+          "name": "新兴市场美元债",
+          "sym": "EMB"
+        }
+      ]
+    },
+    {
       "id": "bonds",
-      "title": "债券 ETF",
-      "question": "久期和信用的价格表现：长债有没有止跌，垃圾债有没有掉队？",
+      "title": "美债 ETF",
+      "question": "久期的价格表现：长债有没有止跌，短债和通胀保值债谁更抗跌？",
       "series": [
         {
           "id": "TLT",
@@ -418,16 +457,6 @@
           "id": "TIP",
           "name": "通胀保值债",
           "sym": "TIP"
-        },
-        {
-          "id": "HYG",
-          "name": "高收益债",
-          "sym": "HYG"
-        },
-        {
-          "id": "LQD",
-          "name": "投资级公司债",
-          "sym": "LQD"
         }
       ]
     },
@@ -687,7 +716,35 @@
       "name": "高收益债 / 中期美债",
       "num": "HYG",
       "den": "IEF",
-      "question": "信用风险偏好，通常领先股市"
+      "question": "剔除大部分利率影响后的信用风险偏好，通常领先股市"
+    },
+    {
+      "id": "R_JNKIEF",
+      "name": "JNK / 中期美债",
+      "num": "JNK",
+      "den": "IEF",
+      "question": "同上，用 SPDR 高收益债交叉验证"
+    },
+    {
+      "id": "R_IGCRED",
+      "name": "投资级 / 中期美债",
+      "num": "LQD",
+      "den": "IEF",
+      "question": "投资级信用利差的价格代理，下行 = 利差走阔"
+    },
+    {
+      "id": "R_QUAL",
+      "name": "高收益 / 投资级",
+      "num": "HYG",
+      "den": "LQD",
+      "question": "信用质量偏好：下行 = 资金从垃圾债逃向高评级"
+    },
+    {
+      "id": "R_PRIV",
+      "name": "私募信贷 / 高收益债",
+      "num": "BIZD",
+      "den": "HYG",
+      "question": "私募信贷是否比公开市场先出问题"
     },
     {
       "id": "R_STKBND",
