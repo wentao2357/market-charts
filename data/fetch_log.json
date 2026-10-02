@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-02T16:00:48Z",
+ "updated": "2026-10-02T16:02:56Z",
  "source": {
   "SPY": "Yahoo SPY",
   "QQQ": "Yahoo QQQ",
@@ -66,6 +66,7 @@
   "BKLN": "Yahoo BKLN",
   "BIZD": "Yahoo BIZD",
   "EMB": "Yahoo EMB",
+  "ITXXO": "Yahoo XTC5.MI",
   "TLT": "Yahoo TLT",
   "IEF": "Yahoo IEF",
   "SHY": "Yahoo SHY",
@@ -99,18 +100,7 @@
   "T5S30S": "US30Y - US5Y",
   "BE10": "财政部 10 Yr - 财政部实际 10 YR"
  },
- "missing": [
-  {
-   "id": "ITXXO",
-   "name": "iTraxx 欧洲 Crossover",
-   "sym": "XTXC.DE"
-  },
-  {
-   "id": "ITXMAIN",
-   "name": "iTraxx 欧洲 Main",
-   "sym": "DXSQ.DE"
-  }
- ],
+ "missing": [],
  "last": {
   "SPY": "2026-10-02",
   "QQQ": "2026-10-02",
@@ -177,12 +167,13 @@
   "BKLN": "2026-10-02",
   "BIZD": "2026-10-02",
   "EMB": "2026-10-02",
+  "ITXXO": "2026-10-02",
   "TLT": "2026-10-02",
   "IEF": "2026-10-02",
   "SHY": "2026-10-02",
   "TIP": "2026-10-02",
   "DXY": "2026-10-02",
-  "USDJPY": "2026-10-02",
+  "USDJPY": "2026-10-01",
   "EURUSD": "2026-10-02",
   "USDCNY": "2026-10-02",
   "AUDJPY": "2026-10-02",
@@ -210,8 +201,5 @@
   "T5S30S": "2026-10-02",
   "BE10": "2026-10-01"
  },
- "errors": [
-  "MISSING ITXXO",
-  "MISSING ITXMAIN"
- ]
+ "errors": []
 }
