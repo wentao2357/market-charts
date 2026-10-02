@@ -433,24 +433,13 @@
         },
         {
           "id": "ITXXO",
-          "name": "iTraxx 欧洲 Crossover",
-          "sym": "XTXC.DE",
+          "name": "iTraxx Crossover 信用压力",
+          "sym": "XTC5.MI",
           "alt": [
-            "XTXC.MI",
-            "XTXC.F"
+            "XTC5.DE",
+            "0DNZ.L"
           ],
-          "note": "Xtrackers 卖出保护 ETF（总回报）。下跌 = 欧洲高收益 CDS 利差走阔"
-        },
-        {
-          "id": "ITXMAIN",
-          "name": "iTraxx 欧洲 Main",
-          "sym": "DXSQ.DE",
-          "alt": [
-            "XTXE.MI",
-            "XTXE.F",
-            "DXSQ.F"
-          ],
-          "note": "Xtrackers 卖出保护 ETF（总回报）。下跌 = 欧洲投资级 CDS 利差走阔"
+          "note": "做空欧洲高收益 CDS 指数的 ETF：上涨 = 利差走阔、信用恶化"
         }
       ]
     },
@@ -766,13 +755,6 @@
       "num": "BIZD",
       "den": "HYG",
       "question": "私募信贷是否比公开市场先出问题"
-    },
-    {
-      "id": "R_EUQUAL",
-      "name": "欧洲 Crossover / Main",
-      "num": "ITXXO",
-      "den": "ITXMAIN",
-      "question": "欧洲 CDS 市场的信用质量偏好：下行 = 高收益利差相对走阔"
     },
     {
       "id": "R_STKBND",
