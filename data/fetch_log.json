@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-02T15:55:17Z",
+ "updated": "2026-10-02T15:57:42Z",
  "source": {
   "SPY": "Yahoo SPY",
   "QQQ": "Yahoo QQQ",
@@ -99,7 +99,18 @@
   "T5S30S": "US30Y - US5Y",
   "BE10": "财政部 10 Yr - 财政部实际 10 YR"
  },
- "missing": [],
+ "missing": [
+  {
+   "id": "ITXXO",
+   "name": "iTraxx 欧洲 Crossover",
+   "sym": "XTXC.DE"
+  },
+  {
+   "id": "ITXMAIN",
+   "name": "iTraxx 欧洲 Main",
+   "sym": "DXSQ.DE"
+  }
+ ],
  "last": {
   "SPY": "2026-10-02",
   "QQQ": "2026-10-02",
@@ -199,5 +210,8 @@
   "T5S30S": "2026-10-02",
   "BE10": "2026-10-01"
  },
- "errors": []
+ "errors": [
+  "MISSING ITXXO",
+  "MISSING ITXMAIN"
+ ]
 }
