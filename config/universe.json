@@ -5,13 +5,43 @@
       "title": "美股大盘与情绪",
       "question": "整体风险偏好往哪边走？指数、小盘、等权和波动率是否同步？",
       "series": [
-        {"id": "SPY", "name": "标普500", "sym": "SPY"},
-        {"id": "QQQ", "name": "纳指100", "sym": "QQQ"},
-        {"id": "IWM", "name": "罗素2000", "sym": "IWM"},
-        {"id": "DIA", "name": "道指", "sym": "DIA"},
-        {"id": "RSP", "name": "标普等权", "sym": "RSP"},
-        {"id": "VIX", "name": "VIX 股市波动率", "sym": "^VIX", "kind": "level"},
-        {"id": "MOVE", "name": "MOVE 美债波动率", "sym": "^MOVE", "kind": "level"}
+        {
+          "id": "SPY",
+          "name": "标普500",
+          "sym": "SPY"
+        },
+        {
+          "id": "QQQ",
+          "name": "纳指100",
+          "sym": "QQQ"
+        },
+        {
+          "id": "IWM",
+          "name": "罗素2000",
+          "sym": "IWM"
+        },
+        {
+          "id": "DIA",
+          "name": "道指",
+          "sym": "DIA"
+        },
+        {
+          "id": "RSP",
+          "name": "标普等权",
+          "sym": "RSP"
+        },
+        {
+          "id": "VIX",
+          "name": "VIX 股市波动率",
+          "sym": "^VIX",
+          "kind": "level"
+        },
+        {
+          "id": "MOVE",
+          "name": "MOVE 美债波动率",
+          "sym": "^MOVE",
+          "kind": "level"
+        }
       ]
     },
     {
@@ -19,13 +49,41 @@
       "title": "科技细分",
       "question": "科技内部钱在流向哪：半导体、软件、云、网安，还是投机成长？",
       "series": [
-        {"id": "XLK", "name": "科技板块", "sym": "XLK"},
-        {"id": "SMH", "name": "半导体", "sym": "SMH"},
-        {"id": "IGV", "name": "软件", "sym": "IGV"},
-        {"id": "SKYY", "name": "云计算", "sym": "SKYY"},
-        {"id": "CIBR", "name": "网络安全", "sym": "CIBR"},
-        {"id": "MAGS", "name": "七巨头", "sym": "MAGS"},
-        {"id": "ARKK", "name": "ARK 创新", "sym": "ARKK"}
+        {
+          "id": "XLK",
+          "name": "科技板块",
+          "sym": "XLK"
+        },
+        {
+          "id": "SMH",
+          "name": "半导体",
+          "sym": "SMH"
+        },
+        {
+          "id": "IGV",
+          "name": "软件",
+          "sym": "IGV"
+        },
+        {
+          "id": "SKYY",
+          "name": "云计算",
+          "sym": "SKYY"
+        },
+        {
+          "id": "CIBR",
+          "name": "网络安全",
+          "sym": "CIBR"
+        },
+        {
+          "id": "MAGS",
+          "name": "七巨头",
+          "sym": "MAGS"
+        },
+        {
+          "id": "ARKK",
+          "name": "ARK 创新",
+          "sym": "ARKK"
+        }
       ]
     },
     {
@@ -33,20 +91,76 @@
       "title": "科技领头羊",
       "question": "龙头还在领涨吗？谁先掉队，谁先创新高？",
       "series": [
-        {"id": "NVDA", "name": "英伟达", "sym": "NVDA"},
-        {"id": "MSFT", "name": "微软", "sym": "MSFT"},
-        {"id": "AAPL", "name": "苹果", "sym": "AAPL"},
-        {"id": "AMZN", "name": "亚马逊", "sym": "AMZN"},
-        {"id": "GOOGL", "name": "谷歌", "sym": "GOOGL"},
-        {"id": "META", "name": "Meta", "sym": "META"},
-        {"id": "TSLA", "name": "特斯拉", "sym": "TSLA"},
-        {"id": "AVGO", "name": "博通", "sym": "AVGO"},
-        {"id": "TSM", "name": "台积电 ADR", "sym": "TSM"},
-        {"id": "ASML", "name": "阿斯麦", "sym": "ASML"},
-        {"id": "MU", "name": "美光", "sym": "MU"},
-        {"id": "AMD", "name": "AMD", "sym": "AMD"},
-        {"id": "ORCL", "name": "甲骨文", "sym": "ORCL"},
-        {"id": "PLTR", "name": "Palantir", "sym": "PLTR"}
+        {
+          "id": "NVDA",
+          "name": "英伟达",
+          "sym": "NVDA"
+        },
+        {
+          "id": "MSFT",
+          "name": "微软",
+          "sym": "MSFT"
+        },
+        {
+          "id": "AAPL",
+          "name": "苹果",
+          "sym": "AAPL"
+        },
+        {
+          "id": "AMZN",
+          "name": "亚马逊",
+          "sym": "AMZN"
+        },
+        {
+          "id": "GOOGL",
+          "name": "谷歌",
+          "sym": "GOOGL"
+        },
+        {
+          "id": "META",
+          "name": "Meta",
+          "sym": "META"
+        },
+        {
+          "id": "TSLA",
+          "name": "特斯拉",
+          "sym": "TSLA"
+        },
+        {
+          "id": "AVGO",
+          "name": "博通",
+          "sym": "AVGO"
+        },
+        {
+          "id": "TSM",
+          "name": "台积电 ADR",
+          "sym": "TSM"
+        },
+        {
+          "id": "ASML",
+          "name": "阿斯麦",
+          "sym": "ASML"
+        },
+        {
+          "id": "MU",
+          "name": "美光",
+          "sym": "MU"
+        },
+        {
+          "id": "AMD",
+          "name": "AMD",
+          "sym": "AMD"
+        },
+        {
+          "id": "ORCL",
+          "name": "甲骨文",
+          "sym": "ORCL"
+        },
+        {
+          "id": "PLTR",
+          "name": "Palantir",
+          "sym": "PLTR"
+        }
       ]
     },
     {
@@ -54,16 +168,56 @@
       "title": "行业板块",
       "question": "进攻板块和防御板块谁强？轮动指向经济的哪个阶段？",
       "series": [
-        {"id": "XLF", "name": "金融", "sym": "XLF"},
-        {"id": "XLE", "name": "能源", "sym": "XLE"},
-        {"id": "XLV", "name": "医疗", "sym": "XLV"},
-        {"id": "XLI", "name": "工业", "sym": "XLI"},
-        {"id": "XLY", "name": "可选消费", "sym": "XLY"},
-        {"id": "XLP", "name": "必选消费", "sym": "XLP"},
-        {"id": "XLU", "name": "公用事业", "sym": "XLU"},
-        {"id": "XLB", "name": "原材料", "sym": "XLB"},
-        {"id": "XLRE", "name": "房地产", "sym": "XLRE"},
-        {"id": "XLC", "name": "通信服务", "sym": "XLC"}
+        {
+          "id": "XLF",
+          "name": "金融",
+          "sym": "XLF"
+        },
+        {
+          "id": "XLE",
+          "name": "能源",
+          "sym": "XLE"
+        },
+        {
+          "id": "XLV",
+          "name": "医疗",
+          "sym": "XLV"
+        },
+        {
+          "id": "XLI",
+          "name": "工业",
+          "sym": "XLI"
+        },
+        {
+          "id": "XLY",
+          "name": "可选消费",
+          "sym": "XLY"
+        },
+        {
+          "id": "XLP",
+          "name": "必选消费",
+          "sym": "XLP"
+        },
+        {
+          "id": "XLU",
+          "name": "公用事业",
+          "sym": "XLU"
+        },
+        {
+          "id": "XLB",
+          "name": "原材料",
+          "sym": "XLB"
+        },
+        {
+          "id": "XLRE",
+          "name": "房地产",
+          "sym": "XLRE"
+        },
+        {
+          "id": "XLC",
+          "name": "通信服务",
+          "sym": "XLC"
+        }
       ]
     },
     {
@@ -71,13 +225,41 @@
       "title": "经济信号行业",
       "question": "股价对经济的投票：地产、银行、零售、运输、航空在说什么？",
       "series": [
-        {"id": "XHB", "name": "住宅建筑", "sym": "XHB"},
-        {"id": "KRE", "name": "区域银行", "sym": "KRE"},
-        {"id": "XRT", "name": "零售", "sym": "XRT"},
-        {"id": "IYT", "name": "运输", "sym": "IYT"},
-        {"id": "JETS", "name": "航空", "sym": "JETS"},
-        {"id": "XME", "name": "金属矿业", "sym": "XME"},
-        {"id": "ITA", "name": "国防航天", "sym": "ITA"}
+        {
+          "id": "XHB",
+          "name": "住宅建筑",
+          "sym": "XHB"
+        },
+        {
+          "id": "KRE",
+          "name": "区域银行",
+          "sym": "KRE"
+        },
+        {
+          "id": "XRT",
+          "name": "零售",
+          "sym": "XRT"
+        },
+        {
+          "id": "IYT",
+          "name": "运输",
+          "sym": "IYT"
+        },
+        {
+          "id": "JETS",
+          "name": "航空",
+          "sym": "JETS"
+        },
+        {
+          "id": "XME",
+          "name": "金属矿业",
+          "sym": "XME"
+        },
+        {
+          "id": "ITA",
+          "name": "国防航天",
+          "sym": "ITA"
+        }
       ]
     },
     {
@@ -85,13 +267,41 @@
       "title": "全球股指",
       "question": "美股以外的市场在确认还是背离？",
       "series": [
-        {"id": "N225", "name": "日经225", "sym": "^N225"},
-        {"id": "KOSPI", "name": "韩国综指", "sym": "^KS11"},
-        {"id": "TWII", "name": "台湾加权", "sym": "^TWII"},
-        {"id": "FTSE", "name": "英国富时100", "sym": "^FTSE"},
-        {"id": "DAX", "name": "德国DAX", "sym": "^GDAXI"},
-        {"id": "BVSP", "name": "巴西圣保罗", "sym": "^BVSP"},
-        {"id": "HSI", "name": "恒生指数", "sym": "^HSI"}
+        {
+          "id": "N225",
+          "name": "日经225",
+          "sym": "^N225"
+        },
+        {
+          "id": "KOSPI",
+          "name": "韩国综指",
+          "sym": "^KS11"
+        },
+        {
+          "id": "TWII",
+          "name": "台湾加权",
+          "sym": "^TWII"
+        },
+        {
+          "id": "FTSE",
+          "name": "英国富时100",
+          "sym": "^FTSE"
+        },
+        {
+          "id": "DAX",
+          "name": "德国DAX",
+          "sym": "^GDAXI"
+        },
+        {
+          "id": "BVSP",
+          "name": "巴西圣保罗",
+          "sym": "^BVSP"
+        },
+        {
+          "id": "HSI",
+          "name": "恒生指数",
+          "sym": "^HSI"
+        }
       ]
     },
     {
@@ -99,18 +309,103 @@
       "title": "美债利率与信用",
       "question": "流动性在收紧还是放松？涨的是实际利率还是通胀预期？信用有没有出事？",
       "series": [
-        {"id": "US3M", "name": "3个月国库券", "sym": "^IRX", "kind": "rate"},
-        {"id": "US2Y", "name": "2年期美债", "src": "fred", "sym": "DGS2", "kind": "rate"},
-        {"id": "US5Y", "name": "5年期美债", "sym": "^FVX", "kind": "rate"},
-        {"id": "US10Y", "name": "10年期美债", "sym": "^TNX", "kind": "rate"},
-        {"id": "US30Y", "name": "30年期美债", "sym": "^TYX", "kind": "rate"},
-        {"id": "T2S10S", "name": "2s10s 利差", "src": "fred", "sym": "T10Y2Y", "kind": "rate"},
-        {"id": "T5S30S", "name": "5s30s 利差", "src": "derived", "expr": ["US30Y", "-", "US5Y"], "kind": "rate"},
-        {"id": "REAL10", "name": "10年实际利率", "src": "fred", "sym": "DFII10", "kind": "rate"},
-        {"id": "BE10", "name": "10年通胀预期", "src": "fred", "sym": "T10YIE", "kind": "rate"},
-        {"id": "SOFR", "name": "SOFR 隔夜利率", "src": "fred", "sym": "SOFR", "kind": "rate"},
-        {"id": "HYOAS", "name": "高收益债利差", "src": "fred", "sym": "BAMLH0A0HYM2", "kind": "rate"},
-        {"id": "IGOAS", "name": "投资级债利差", "src": "fred", "sym": "BAMLC0A0CM", "kind": "rate"}
+        {
+          "id": "US3M",
+          "name": "3个月国库券",
+          "sym": "^IRX",
+          "kind": "rate"
+        },
+        {
+          "id": "US2Y",
+          "name": "2年期美债",
+          "src": "treasury",
+          "field": "2 Yr",
+          "fred": "DGS2",
+          "kind": "rate"
+        },
+        {
+          "id": "US5Y",
+          "name": "5年期美债",
+          "sym": "^FVX",
+          "kind": "rate"
+        },
+        {
+          "id": "US10Y",
+          "name": "10年期美债",
+          "sym": "^TNX",
+          "kind": "rate"
+        },
+        {
+          "id": "US30Y",
+          "name": "30年期美债",
+          "sym": "^TYX",
+          "kind": "rate"
+        },
+        {
+          "id": "T2S10S",
+          "name": "2s10s 利差",
+          "src": "derived",
+          "expr": [
+            "TSY:10 Yr",
+            "-",
+            "TSY:2 Yr"
+          ],
+          "fred": "T10Y2Y",
+          "kind": "rate"
+        },
+        {
+          "id": "T5S30S",
+          "name": "5s30s 利差",
+          "src": "derived",
+          "expr": [
+            "US30Y",
+            "-",
+            "US5Y"
+          ],
+          "kind": "rate"
+        },
+        {
+          "id": "REAL10",
+          "name": "10年实际利率",
+          "src": "treasury_real",
+          "field": "10 YR",
+          "fred": "DFII10",
+          "kind": "rate"
+        },
+        {
+          "id": "BE10",
+          "name": "10年通胀预期",
+          "src": "derived",
+          "expr": [
+            "TSY:10 Yr",
+            "-",
+            "TSYR:10 YR"
+          ],
+          "fred": "T10YIE",
+          "kind": "rate",
+          "note": "名义10年 − 实际10年（盈亏平衡通胀率）"
+        },
+        {
+          "id": "SOFR",
+          "name": "SOFR 隔夜利率",
+          "src": "nyfed",
+          "fred": "SOFR",
+          "kind": "rate"
+        },
+        {
+          "id": "HYOAS",
+          "name": "高收益债利差",
+          "src": "fred",
+          "sym": "BAMLH0A0HYM2",
+          "kind": "rate"
+        },
+        {
+          "id": "IGOAS",
+          "name": "投资级债利差",
+          "src": "fred",
+          "sym": "BAMLC0A0CM",
+          "kind": "rate"
+        }
       ]
     },
     {
@@ -118,12 +413,36 @@
       "title": "债券 ETF",
       "question": "久期和信用的价格表现：长债有没有止跌，垃圾债有没有掉队？",
       "series": [
-        {"id": "TLT", "name": "20年+美债", "sym": "TLT"},
-        {"id": "IEF", "name": "7-10年美债", "sym": "IEF"},
-        {"id": "SHY", "name": "1-3年美债", "sym": "SHY"},
-        {"id": "TIP", "name": "通胀保值债", "sym": "TIP"},
-        {"id": "HYG", "name": "高收益债", "sym": "HYG"},
-        {"id": "LQD", "name": "投资级公司债", "sym": "LQD"}
+        {
+          "id": "TLT",
+          "name": "20年+美债",
+          "sym": "TLT"
+        },
+        {
+          "id": "IEF",
+          "name": "7-10年美债",
+          "sym": "IEF"
+        },
+        {
+          "id": "SHY",
+          "name": "1-3年美债",
+          "sym": "SHY"
+        },
+        {
+          "id": "TIP",
+          "name": "通胀保值债",
+          "sym": "TIP"
+        },
+        {
+          "id": "HYG",
+          "name": "高收益债",
+          "sym": "HYG"
+        },
+        {
+          "id": "LQD",
+          "name": "投资级公司债",
+          "sym": "LQD"
+        }
       ]
     },
     {
@@ -131,13 +450,53 @@
       "title": "汇率",
       "question": "美元强弱和日元、人民币、欧元的方向：全球流动性的松紧阀门。",
       "series": [
-        {"id": "DXY", "name": "美元指数", "sym": "DX-Y.NYB"},
-        {"id": "USDJPY", "name": "美元/日元", "sym": "JPY=X", "note": "上升 = 日元走弱", "fred": "DEXJPUS"},
-        {"id": "EURUSD", "name": "欧元/美元", "sym": "EURUSD=X", "fred": "DEXUSEU"},
-        {"id": "USDCNH", "name": "美元/离岸人民币", "sym": "CNH=X", "note": "上升 = 人民币走弱"},
-        {"id": "USDCNY", "name": "美元/在岸人民币", "sym": "CNY=X", "note": "上升 = 人民币走弱", "fred": "DEXCHUS"},
-        {"id": "AUDJPY", "name": "澳元/日元", "sym": "AUDJPY=X", "note": "经典风险偏好指标"},
-        {"id": "USDKRW", "name": "美元/韩元", "sym": "KRW=X", "note": "上升 = 韩元走弱", "fred": "DEXKOUS"}
+        {
+          "id": "DXY",
+          "name": "美元指数",
+          "sym": "DX-Y.NYB"
+        },
+        {
+          "id": "USDJPY",
+          "name": "美元/日元",
+          "sym": "JPY=X",
+          "note": "上升 = 日元走弱",
+          "fred": "DEXJPUS"
+        },
+        {
+          "id": "EURUSD",
+          "name": "欧元/美元",
+          "sym": "EURUSD=X",
+          "fred": "DEXUSEU"
+        },
+        {
+          "id": "USDCNH",
+          "name": "美元/离岸人民币",
+          "sym": "USDCNH=X",
+          "alt": [
+            "CNH=X"
+          ],
+          "note": "上升 = 人民币走弱"
+        },
+        {
+          "id": "USDCNY",
+          "name": "美元/在岸人民币",
+          "sym": "CNY=X",
+          "note": "上升 = 人民币走弱",
+          "fred": "DEXCHUS"
+        },
+        {
+          "id": "AUDJPY",
+          "name": "澳元/日元",
+          "sym": "AUDJPY=X",
+          "note": "经典风险偏好指标"
+        },
+        {
+          "id": "USDKRW",
+          "name": "美元/韩元",
+          "sym": "KRW=X",
+          "note": "上升 = 韩元走弱",
+          "fred": "DEXKOUS"
+        }
       ]
     },
     {
@@ -145,20 +504,85 @@
       "title": "大宗商品",
       "question": "通胀和增长的实物证据：能源、金属、粮食谁在领涨？",
       "series": [
-        {"id": "GOLD", "name": "黄金", "sym": "GC=F"},
-        {"id": "SILVER", "name": "白银", "sym": "SI=F"},
-        {"id": "COPPER", "name": "铜", "sym": "HG=F"},
-        {"id": "WTI", "name": "WTI 原油", "sym": "CL=F", "fred": "DCOILWTICO"},
-        {"id": "BRENT", "name": "布伦特原油", "sym": "BZ=F", "fred": "DCOILBRENTEU"},
-        {"id": "NATGAS", "name": "美国天然气", "sym": "NG=F"},
-        {"id": "DIESEL", "name": "柴油（取暖油）", "sym": "HO=F"},
-        {"id": "IRONORE", "name": "铁矿石 62%", "sym": "TIO=F", "alt": ["RIO"]},
-        {"id": "COAL", "name": "纽卡斯尔动力煤", "sym": "MTF=F", "alt": ["BTU"]},
-        {"id": "URANIUM", "name": "铀（Sprott 实物信托）", "sym": "SRUUF", "alt": ["U-UN.TO"]},
-        {"id": "URA", "name": "铀矿股 ETF", "sym": "URA"},
-        {"id": "CORN", "name": "玉米", "sym": "ZC=F"},
-        {"id": "WHEAT", "name": "小麦", "sym": "ZW=F"},
-        {"id": "SOY", "name": "大豆", "sym": "ZS=F"}
+        {
+          "id": "GOLD",
+          "name": "黄金",
+          "sym": "GC=F"
+        },
+        {
+          "id": "SILVER",
+          "name": "白银",
+          "sym": "SI=F"
+        },
+        {
+          "id": "COPPER",
+          "name": "铜",
+          "sym": "HG=F"
+        },
+        {
+          "id": "WTI",
+          "name": "WTI 原油",
+          "sym": "CL=F",
+          "fred": "DCOILWTICO"
+        },
+        {
+          "id": "BRENT",
+          "name": "布伦特原油",
+          "sym": "BZ=F",
+          "fred": "DCOILBRENTEU"
+        },
+        {
+          "id": "NATGAS",
+          "name": "美国天然气",
+          "sym": "NG=F"
+        },
+        {
+          "id": "DIESEL",
+          "name": "柴油（取暖油）",
+          "sym": "HO=F"
+        },
+        {
+          "id": "IRONORE",
+          "name": "铁矿石 62%",
+          "sym": "TIO=F",
+          "alt": [
+            "RIO"
+          ]
+        },
+        {
+          "id": "COAL",
+          "name": "动力煤（Peabody 股价代理）",
+          "sym": "BTU",
+          "note": "动力煤期货在 Yahoo 已停更，用美国最大煤企股价作代理"
+        },
+        {
+          "id": "URANIUM",
+          "name": "铀（Sprott 实物信托）",
+          "sym": "SRUUF",
+          "alt": [
+            "U-UN.TO"
+          ]
+        },
+        {
+          "id": "URA",
+          "name": "铀矿股 ETF",
+          "sym": "URA"
+        },
+        {
+          "id": "CORN",
+          "name": "玉米",
+          "sym": "ZC=F"
+        },
+        {
+          "id": "WHEAT",
+          "name": "小麦",
+          "sym": "ZW=F"
+        },
+        {
+          "id": "SOY",
+          "name": "大豆",
+          "sym": "ZS=F"
+        }
       ]
     },
     {
@@ -166,41 +590,205 @@
       "title": "加密资产",
       "question": "边际流动性最敏感的资产：风险偏好在扩张还是收缩？",
       "series": [
-        {"id": "BTC", "name": "比特币", "sym": "BTC-USD", "fred": "CBBTCUSD"},
-        {"id": "ETH", "name": "以太坊", "sym": "ETH-USD", "fred": "CBETHUSD"},
-        {"id": "SOL", "name": "Solana", "sym": "SOL-USD"},
-        {"id": "COIN", "name": "Coinbase", "sym": "COIN"},
-        {"id": "MSTR", "name": "Strategy (MSTR)", "sym": "MSTR"}
+        {
+          "id": "BTC",
+          "name": "比特币",
+          "sym": "BTC-USD",
+          "fred": "CBBTCUSD"
+        },
+        {
+          "id": "ETH",
+          "name": "以太坊",
+          "sym": "ETH-USD",
+          "fred": "CBETHUSD"
+        },
+        {
+          "id": "SOL",
+          "name": "Solana",
+          "sym": "SOL-USD"
+        },
+        {
+          "id": "COIN",
+          "name": "Coinbase",
+          "sym": "COIN"
+        },
+        {
+          "id": "MSTR",
+          "name": "Strategy (MSTR)",
+          "sym": "MSTR"
+        }
       ]
     }
   ],
   "ratios": [
-    {"id": "R_BREADTH", "name": "等权 / 市值加权", "num": "RSP", "den": "SPY", "question": "上涨是少数巨头撑着，还是全面参与？下行 = 越来越集中"},
-    {"id": "R_SMALL", "name": "小盘 / 大盘", "num": "IWM", "den": "SPY", "question": "小盘对利率最敏感，上行通常代表融资环境改善"},
-    {"id": "R_SEMI", "name": "半导体 / 标普", "num": "SMH", "den": "SPY", "question": "AI 周期的领导力还在不在"},
-    {"id": "R_SWSEMI", "name": "软件 / 半导体", "num": "IGV", "den": "SMH", "question": "AI 收益从硬件向应用扩散了吗"},
-    {"id": "R_CONC", "name": "七巨头 / 等权", "num": "MAGS", "den": "RSP", "question": "头部集中度"},
-    {"id": "R_SPEC", "name": "ARK / 纳指", "num": "ARKK", "den": "QQQ", "question": "投机情绪温度"},
-    {"id": "R_RISK", "name": "可选 / 必选消费", "num": "XLY", "den": "XLP", "question": "经典风险偏好比值，下行 = 防御"},
-    {"id": "R_DEF", "name": "公用事业 / 标普", "num": "XLU", "den": "SPY", "question": "资金躲进防御板块了吗"},
-    {"id": "R_BANK", "name": "区域银行 / 标普", "num": "KRE", "den": "SPY", "question": "信贷与银行体系压力"},
-    {"id": "R_HOME", "name": "住宅建筑 / 标普", "num": "XHB", "den": "SPY", "question": "对利率最敏感的实体链条"},
-    {"id": "R_TRANS", "name": "运输 / 标普", "num": "IYT", "den": "SPY", "question": "道氏理论：运输不确认，指数难持续"},
-    {"id": "R_ENERGY", "name": "能源 / 标普", "num": "XLE", "den": "SPY", "question": "油价冲击在股市的映射"},
-    {"id": "R_CREDIT", "name": "高收益债 / 中期美债", "num": "HYG", "den": "IEF", "question": "信用风险偏好，通常领先股市"},
-    {"id": "R_STKBND", "name": "标普 / 长债", "num": "SPY", "den": "TLT", "question": "股债相对强弱"},
-    {"id": "R_CUAU", "name": "铜金比", "num": "COPPER", "den": "GOLD", "question": "增长 vs 避险，常与10年期收益率同向"},
-    {"id": "R_AUAG", "name": "金银比", "num": "GOLD", "den": "SILVER", "question": "上行 = 偏避险，下行 = 偏工业需求"},
-    {"id": "R_ETHBTC", "name": "ETH / BTC", "num": "ETH", "den": "BTC", "question": "加密内部的风险偏好"}
+    {
+      "id": "R_BREADTH",
+      "name": "等权 / 市值加权",
+      "num": "RSP",
+      "den": "SPY",
+      "question": "上涨是少数巨头撑着，还是全面参与？下行 = 越来越集中"
+    },
+    {
+      "id": "R_SMALL",
+      "name": "小盘 / 大盘",
+      "num": "IWM",
+      "den": "SPY",
+      "question": "小盘对利率最敏感，上行通常代表融资环境改善"
+    },
+    {
+      "id": "R_SEMI",
+      "name": "半导体 / 标普",
+      "num": "SMH",
+      "den": "SPY",
+      "question": "AI 周期的领导力还在不在"
+    },
+    {
+      "id": "R_SWSEMI",
+      "name": "软件 / 半导体",
+      "num": "IGV",
+      "den": "SMH",
+      "question": "AI 收益从硬件向应用扩散了吗"
+    },
+    {
+      "id": "R_CONC",
+      "name": "七巨头 / 等权",
+      "num": "MAGS",
+      "den": "RSP",
+      "question": "头部集中度"
+    },
+    {
+      "id": "R_SPEC",
+      "name": "ARK / 纳指",
+      "num": "ARKK",
+      "den": "QQQ",
+      "question": "投机情绪温度"
+    },
+    {
+      "id": "R_RISK",
+      "name": "可选 / 必选消费",
+      "num": "XLY",
+      "den": "XLP",
+      "question": "经典风险偏好比值，下行 = 防御"
+    },
+    {
+      "id": "R_DEF",
+      "name": "公用事业 / 标普",
+      "num": "XLU",
+      "den": "SPY",
+      "question": "资金躲进防御板块了吗"
+    },
+    {
+      "id": "R_BANK",
+      "name": "区域银行 / 标普",
+      "num": "KRE",
+      "den": "SPY",
+      "question": "信贷与银行体系压力"
+    },
+    {
+      "id": "R_HOME",
+      "name": "住宅建筑 / 标普",
+      "num": "XHB",
+      "den": "SPY",
+      "question": "对利率最敏感的实体链条"
+    },
+    {
+      "id": "R_TRANS",
+      "name": "运输 / 标普",
+      "num": "IYT",
+      "den": "SPY",
+      "question": "道氏理论：运输不确认，指数难持续"
+    },
+    {
+      "id": "R_ENERGY",
+      "name": "能源 / 标普",
+      "num": "XLE",
+      "den": "SPY",
+      "question": "油价冲击在股市的映射"
+    },
+    {
+      "id": "R_CREDIT",
+      "name": "高收益债 / 中期美债",
+      "num": "HYG",
+      "den": "IEF",
+      "question": "信用风险偏好，通常领先股市"
+    },
+    {
+      "id": "R_STKBND",
+      "name": "标普 / 长债",
+      "num": "SPY",
+      "den": "TLT",
+      "question": "股债相对强弱"
+    },
+    {
+      "id": "R_CUAU",
+      "name": "铜金比",
+      "num": "COPPER",
+      "den": "GOLD",
+      "question": "增长 vs 避险，常与10年期收益率同向"
+    },
+    {
+      "id": "R_AUAG",
+      "name": "金银比",
+      "num": "GOLD",
+      "den": "SILVER",
+      "question": "上行 = 偏避险，下行 = 偏工业需求"
+    },
+    {
+      "id": "R_ETHBTC",
+      "name": "ETH / BTC",
+      "num": "ETH",
+      "den": "BTC",
+      "question": "加密内部的风险偏好"
+    }
   ],
   "divergences": [
-    {"a": "R_CUAU", "b": "US10Y", "label": "铜金比 vs 10年期收益率", "expect": "same"},
-    {"a": "R_CREDIT", "b": "SPY", "label": "信用风险偏好 vs 标普", "expect": "same"},
-    {"a": "R_BREADTH", "b": "SPY", "label": "市场宽度 vs 标普", "expect": "same"},
-    {"a": "SMH", "b": "QQQ", "label": "半导体 vs 纳指", "expect": "same"},
-    {"a": "R_TRANS", "b": "SPY", "label": "运输相对强弱 vs 标普", "expect": "same"},
-    {"a": "BTC", "b": "QQQ", "label": "比特币 vs 纳指", "expect": "same"},
-    {"a": "DXY", "b": "GOLD", "label": "美元 vs 黄金", "expect": "opposite"},
-    {"a": "USDJPY", "b": "N225", "label": "美元/日元 vs 日经", "expect": "same"}
+    {
+      "a": "R_CUAU",
+      "b": "US10Y",
+      "label": "铜金比 vs 10年期收益率",
+      "expect": "same"
+    },
+    {
+      "a": "R_CREDIT",
+      "b": "SPY",
+      "label": "信用风险偏好 vs 标普",
+      "expect": "same"
+    },
+    {
+      "a": "R_BREADTH",
+      "b": "SPY",
+      "label": "市场宽度 vs 标普",
+      "expect": "same"
+    },
+    {
+      "a": "SMH",
+      "b": "QQQ",
+      "label": "半导体 vs 纳指",
+      "expect": "same"
+    },
+    {
+      "a": "R_TRANS",
+      "b": "SPY",
+      "label": "运输相对强弱 vs 标普",
+      "expect": "same"
+    },
+    {
+      "a": "BTC",
+      "b": "QQQ",
+      "label": "比特币 vs 纳指",
+      "expect": "same"
+    },
+    {
+      "a": "DXY",
+      "b": "GOLD",
+      "label": "美元 vs 黄金",
+      "expect": "opposite"
+    },
+    {
+      "a": "USDJPY",
+      "b": "N225",
+      "label": "美元/日元 vs 日经",
+      "expect": "same"
+    }
   ]
 }
