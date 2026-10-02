@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>跨资产图表簿</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a chart book — sticky control strip, a "today's moves" scan, then one grid of small multiples per question. */
+:root {
+  color-scheme: light;
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --surface-2: #f6f8fa;
+  --ink: #111d28;
+  --ink-2: #47525e;
+  --ink-3: #6f7b87;
+  --rule: #d6dde4;
+  --rule-strong: #b9c3cd;
+  --line: #1f4f86;
+  --line-fill: rgba(31, 79, 134, 0.10);
+  --accent: #2a63b8;
+  --accent-soft: rgba(42, 99, 184, 0.10);
+  --green: #0f8a4c;
+  --red: #c8372d;
+  --amber: #a26f00;
+  --compare: #d0571f;
+  --ma50: #a26f00;
+  --ma200: #6b52c2;
+  --gain: var(--green);
+  --loss: var(--red);
+  --f-ui: "Archivo", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --f-num: "Spline Sans Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0c1217; --surface: #131b22; --surface-2: #19232c;
+    --ink: #e3e9ee; --ink-2: #a8b4bf; --ink-3: #7b8894;
+    --rule: #25313b; --rule-strong: #364450;
+    --line: #8db6e6; --line-fill: rgba(141, 182, 230, 0.12);
+    --accent: #79a8ea; --accent-soft: rgba(121, 168, 234, 0.14);
+    --green: #3fc383; --red: #f0695e; --amber: #e0ae3d;
+    --compare: #f08a52; --ma50: #e0ae3d; --ma200: #a996f2;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c1217; --surface: #131b22; --surface-2: #19232c;
+  --ink: #e3e9ee; --ink-2: #a8b4bf; --ink-3: #7b8894;
+  --rule: #25313b; --rule-strong: #364450;
+  --line: #8db6e6; --line-fill: rgba(141, 182, 230, 0.12);
+  --accent: #79a8ea; --accent-soft: rgba(121, 168, 234, 0.14);
+  --green: #3fc383; --red: #f0695e; --amber: #e0ae3d;
+  --compare: #f08a52; --ma50: #e0ae3d; --ma200: #a996f2;
+}
+:root[data-updown="cn"] { --gain: var(--red); --loss: var(--green); }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-ui); font-size: 14px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1440px; margin: 0 auto; padding-inline: 20px; }
+@media (max-width: 560px) { .wrap { padding-inline: 16px; } }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.mast { padding-block: 28px 14px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.mast h1 { margin: 0; font-size: clamp(26px, 3.4vw, 36px); font-weight: 760; font-stretch: 78%; letter-spacing: -0.01em; text-wrap: balance; }
+.mast p { margin: 4px 0 0; color: var(--ink-2); max-width: 62ch; }
+.stamp { text-align: right; color: var(--ink-2); font-size: 12.5px; }
+.stamp b { color: var(--ink); font-weight: 600; }
+
+/* controls */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: none; padding: 5px 10px; cursor: pointer; font-family: var(--f-num); font-size: 12.5px; color: var(--ink-2); }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.ctl { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.ctl select, .ctl input[type=search] { background: var(--surface); border: 1px solid var(--rule-strong); border-radius: var(--radius); padding: 5px 8px; font-size: 13px; }
+.ctl input[type=search] { width: 150px; }
+@media (max-width: 560px) { .bar { position: relative; } .ctl input[type=search] { width: 120px; } .plist { max-height: 190px; } }
+.toggle { border: 1px solid var(--rule-strong); background: var(--surface); border-radius: var(--radius); padding: 5px 10px; cursor: pointer; font-size: 13px; color: var(--ink-2); }
+.toggle[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.bar .jump { flex-wrap: nowrap; }
+.jump { display: flex; gap: 6px; overflow-x: auto; padding-block: 0 10px; scrollbar-width: thin; }
+.jump a { flex: none; font-size: 12.5px; color: var(--ink-2); text-decoration: none; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 99px; background: var(--surface); }
+.jump a:hover { color: var(--ink); border-color: var(--rule-strong); }
+
+/* scan */
+.scan { margin-block: 18px 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; min-width: 0; }
+.panel h3 { margin: 0 0 2px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.panel .sub { margin: 0 0 8px; font-size: 12px; color: var(--ink-3); }
+.plist { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 248px; overflow-y: auto; }
+.plist button { width: 100%; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: baseline; border: 0; background: none; padding: 4px 6px; border-radius: 4px; cursor: pointer; text-align: left; }
+.plist button:hover { background: var(--surface-2); }
+.plist .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plist .nm small { color: var(--ink-3); margin-left: 6px; font-family: var(--f-num); font-size: 11px; }
+.plist .empty { color: var(--ink-3); font-size: 12.5px; padding: 4px 6px; }
+.dv { grid-template-columns: 1fr auto auto auto !important; }
+
+/* pills */
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; line-height: 1; padding: 3px 6px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; font-weight: 600; }
+.pill.hi { color: var(--gain); }
+.pill.lo { color: var(--loss); }
+.pill.z { color: var(--amber); }
+.pill.ma { color: var(--ink-2); }
+.pill.stale { color: var(--ink-3); font-weight: 500; }
+.pill.ok { color: var(--ink-3); font-weight: 500; }
+.pill.warn { color: var(--amber); }
+.up { color: var(--gain); }
+.down { color: var(--loss); }
+.flat { color: var(--ink-3); }
+
+/* groups */
+.group { margin-top: 30px; scroll-margin-top: 110px; }
+.ghead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule-strong); margin-bottom: 12px; }
+.ghead h2 { margin: 0; font-size: 19px; font-weight: 740; font-stretch: 85%; }
+.ghead p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.ghead .count { margin-left: auto; color: var(--ink-3); font-size: 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } }
+
+.card { position: relative; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 12px 9px; cursor: pointer; min-width: 0; display: flex; flex-direction: column; gap: 4px; transition: border-color .12s; }
+.card:hover { border-color: var(--rule-strong); }
+.card.missing { cursor: default; opacity: .7; }
+.c-top { display: flex; align-items: start; gap: 6px; }
+.c-name { font-weight: 650; font-size: 13.5px; line-height: 1.25; min-width: 0; flex: 1; }
+.c-sym { display: block; font-family: var(--f-num); font-size: 11px; color: var(--ink-3); font-weight: 400; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.star { border: 0; background: none; padding: 0 2px; cursor: pointer; color: var(--ink-3); font-size: 15px; line-height: 1; }
+.star[aria-pressed="true"] { color: var(--amber); }
+.c-q { font-size: 11.5px; color: var(--ink-3); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.c-vals { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; row-gap: 0; }
+.c-last { font-family: var(--f-num); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.c-chg { font-family: var(--f-num); font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.c-d1 { font-family: var(--f-num); font-size: 11.5px; color: var(--ink-3); margin-left: auto; font-variant-numeric: tabular-nums; }
+.spark { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.spark .area { fill: var(--line-fill); }
+.spark .ln { fill: none; stroke: var(--line); stroke-width: 1.6; stroke-linejoin: round; }
+.spark .ma { fill: none; stroke: var(--ma200); stroke-width: 1.1; stroke-dasharray: 3 2; }
+.spark .base { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 2 3; }
+.spark .end { stroke: var(--surface); stroke-width: 2; }
+.spark .hov { fill: var(--ink); }
+.spark .hovl { stroke: var(--ink-3); stroke-width: 1; }
+.c-foot { display: flex; align-items: center; gap: 6px; min-height: 18px; flex-wrap: wrap; }
+.r52 { flex: 1; min-width: 70px; display: grid; grid-template-columns: auto 1fr auto; gap: 5px; align-items: center; font-family: var(--f-num); font-size: 10.5px; color: var(--ink-3); }
+.r52 .trk { position: relative; height: 4px; border-radius: 2px; background: var(--surface-2); border: 1px solid var(--rule); }
+.r52 .dot { position: absolute; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--ink); border: 2px solid var(--surface); box-sizing: content-box; transform: translate(-1px,-1px); }
+.readout { font-family: var(--f-num); font-size: 11px; color: var(--ink-3); min-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.readout.live { color: var(--ink-2); }
+
+/* dialog */
+dialog { border: 1px solid var(--rule-strong); border-radius: 8px; padding: 0; width: min(1080px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); }
+dialog::backdrop { background: rgba(8, 14, 20, .55); }
+.dlg { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+@media (max-width: 560px) { .dlg { padding: 14px 14px 16px; } }
+.d-head { display: flex; align-items: start; gap: 12px; }
+.d-head h2 { margin: 0; font-size: 22px; font-weight: 740; font-stretch: 82%; }
+.d-head .meta { color: var(--ink-3); font-size: 12px; font-family: var(--f-num); }
+.d-head .q { color: var(--ink-2); font-size: 13px; margin-top: 4px; max-width: 70ch; }
+.d-head .close { margin-left: auto; border: 1px solid var(--rule-strong); background: var(--surface-2); border-radius: var(--radius); padding: 4px 10px; cursor: pointer; }
+.d-big { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.d-big .c-last { font-size: 26px; }
+.d-big .c-chg { font-size: 15px; }
+.d-ctl { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 16px; height: 0; border-top: 2px solid; display: inline-block; }
+.chartbox { position: relative; }
+.chart { display: block; width: 100%; touch-action: pan-y; }
+.chart text { fill: var(--ink-3); font-family: var(--f-num); font-size: 11px; }
+.chart .grid line { stroke: var(--rule); stroke-width: 1; }
+.chart .main { fill: none; stroke: var(--line); stroke-width: 2; stroke-linejoin: round; }
+.chart .mainarea { fill: var(--line-fill); }
+.chart .cmp { fill: none; stroke: var(--compare); stroke-width: 2; stroke-linejoin: round; }
+.chart .ma50 { fill: none; stroke: var(--ma50); stroke-width: 1.3; stroke-dasharray: 5 3; }
+.chart .ma200 { fill: none; stroke: var(--ma200); stroke-width: 1.3; stroke-dasharray: 5 3; }
+.chart .xh { stroke: var(--ink-3); stroke-width: 1; }
+.chart .hd { stroke: var(--surface); stroke-width: 2; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 6px 9px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); white-space: nowrap; font-family: var(--f-num); }
+.tip b { font-weight: 600; }
+.tip .k { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); margin: 0; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.stats div { padding: 8px 10px; box-shadow: 1px 0 0 var(--rule), 0 1px 0 var(--rule); }
+.stats dt { font-size: 11.5px; color: var(--ink-3); }
+.stats dd { margin: 2px 0 0; font-family: var(--f-num); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.note { font-size: 12px; color: var(--ink-3); }
+
+/* footer */
+footer { margin-block: 40px 30px; padding-top: 14px; border-top: 1px solid var(--rule-strong); color: var(--ink-2); font-size: 12.5px; display: grid; gap: 8px; }
+footer p { margin: 0; max-width: 90ch; }
+.state { padding: 60px 0; text-align: center; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="wrap mast">
+  <div>
+    <h1>跨资产图表簿</h1>
+    <p>先扫"今日异动"，再按问题逐组看图。价格走势和你的判断冲突时，先怀疑自己。</p>
+  </div>
+  <div class="stamp" id="stamp">加载数据中…</div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="seg" id="ranges" role="group" aria-label="时间区间"></div>
+    <button class="toggle" id="maToggle" aria-pressed="false" title="在小图上显示200日均线">200日线</button>
+    <label class="ctl">排序
+      <select id="sort">
+        <option value="default">默认</option>
+        <option value="chg-desc">区间涨幅 高→低</option>
+        <option value="chg-asc">区间涨幅 低→高</option>
+        <option value="pos">52周位置 高→低</option>
+      </select>
+    </label>
+    <label class="ctl"><input type="search" id="q" placeholder="搜索 名称 / 代码" autocomplete="off"></label>
+    <button class="toggle" id="udToggle" aria-pressed="false" title="切换涨跌颜色">绿涨红跌</button>
+  </div>
+  <nav class="wrap jump" id="jump" aria-label="跳转到分组"></nav>
+</div>
+
+<main class="wrap" id="main">
+  <div class="state" id="state">正在读取最新收盘数据…</div>
+</main>
+
+<footer class="wrap" id="foot" hidden></footer>
+
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="dlg" id="dbody"></div>
+</dialog>
+
+<script>
+"use strict";
+/* ---------- persisted view settings (per browser) ---------- */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("mc:" + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("mc:" + k, JSON.stringify(v)); } catch {} }
+};
+const RANGES = [["1M", 30], ["3M", 91], ["6M", 182], ["YTD", "ytd"], ["1Y", 365], ["2Y", 730], ["5Y", 1830]];
+const state = {
+  range: store.get("range", "6M"),
+  ma: store.get("ma", false),
+  cn: store.get("cn", false),
+  sort: store.get("sort", "default"),
+  q: "",
+  pins: store.get("pins", [])
+};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const DAY = 864e5;
+const dOf = day => new Date(day * DAY);
+const fmtDate = (day, style) => {
+  const d = dOf(day), y = d.getUTCFullYear(), m = d.getUTCMonth() + 1, dd = d.getUTCDate();
+  if (style === "ym") return `${y}-${String(m).padStart(2, "0")}`;
+  if (style === "md") return `${m}/${dd}`;
+  return `${y}-${String(m).padStart(2, "0")}-${String(dd).padStart(2, "0")}`;
+};
+function bsearch(t, day) { // last index with t[i] <= day, or -1
+  let lo = 0, hi = t.length - 1, ans = -1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (t[mid] <= day) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  return ans;
+}
+function rolling(v, w) {
+  const out = new Float64Array(v.length).fill(NaN); let s = 0;
+  for (let i = 0; i < v.length; i++) { s += v[i]; if (i >= w) s -= v[i - w]; if (i >= w - 1) out[i] = s / w; }
+  return out;
+}
+const isRate = S => S.kind === "rate";
+function fmtV(S, v) {
+  if (!isFinite(v)) return "—";
+  if (isRate(S)) return v.toFixed(2) + "%";
+  const a = Math.abs(v);
+  if (a >= 10000) return v.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  if (a >= 1000) return v.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  if (a >= 10) return v.toFixed(2);
+  if (a >= 1) return v.toFixed(3);
+  return v.toPrecision(4);
+}
+function fmtC(S, c, digits) {
+  if (!isFinite(c)) return "—";
+  const s = c > 0 ? "+" : c < 0 ? "−" : "±";
+  if (isRate(S)) return s + Math.abs(c).toFixed(0) + "bp";
+  return s + Math.abs(c).toFixed(digits ?? (Math.abs(c) >= 100 ? 0 : Math.abs(c) >= 10 ? 1 : 2)) + "%";
+}
+const fmtD1 = S => `最近一日 ${fmtC(S, S.st.d1)} · ${fmtDate(S.st.lastT, "md")}`;
+const cls = (S, c) => !isFinite(c) ? "flat" : Math.abs(c) < (isRate(S) ? 0.5 : 0.005) ? "flat" : c > 0 ? "up" : "down";
+
+/* ---------- data model ---------- */
+let DB = null;
+
+function decode(raw) {
+  const n = raw.t.length, t = new Int32Array(n), v = new Float64Array(n);
+  let acc = 0;
+  for (let i = 0; i < n; i++) { acc += raw.t[i]; t[i] = acc; v[i] = raw.v[i]; }
+  return { t, v };
+}
+function ratioSeries(A, B) {
+  const t = [], v = []; let j = 0;
+  for (let i = 0; i < A.t.length; i++) {
+    while (j < B.t.length && B.t[j] < A.t[i]) j++;
+    if (j < B.t.length && B.t[j] === A.t[i] && B.v[j] !== 0) { t.push(A.t[i]); v.push(A.v[i] / B.v[j]); }
+  }
+  return { t: Int32Array.from(t), v: Float64Array.from(v) };
+}
+function computeStats(S) {
+  const { t, v } = S, n = v.length;
+  if (n < 3) return;
+  const last = v[n - 1], lastT = t[n - 1], rate = isRate(S);
+  const i52 = Math.max(0, bsearch(t, lastT - 365) + 1);
+  let hi = -Infinity, lo = Infinity, phi = -Infinity, plo = Infinity;
+  for (let i = i52; i < n; i++) { hi = Math.max(hi, v[i]); lo = Math.min(lo, v[i]); if (i < n - 1) { phi = Math.max(phi, v[i]); plo = Math.min(plo, v[i]); } }
+  const enough = n - i52 > 150;
+  const d = i => rate ? v[i] - v[i - 1] : Math.log(v[i] / v[i - 1]);
+  const dl = d(n - 1);
+  let sum = 0, sq = 0, m = 0;
+  for (let i = Math.max(1, n - 61); i < n - 1; i++) { const x = d(i); if (isFinite(x)) { sum += x; sq += x * x; m++; } }
+  const sd = m > 20 ? Math.sqrt(Math.max(0, sq / m - (sum / m) ** 2)) : NaN;
+  S.ma50 = rolling(v, 50); S.ma200 = rolling(v, 200);
+  const m200 = S.ma200[n - 1];
+  let cross = null;
+  if (isFinite(m200)) {
+    const above = last > m200;
+    for (let k = 1; k <= 3 && n - 1 - k >= 0; k++) {
+      const mk = S.ma200[n - 1 - k];
+      if (isFinite(mk) && (v[n - 1 - k] > mk) !== above) { cross = above ? "up" : "down"; break; }
+    }
+  }
+  let vol = NaN;
+  if (!rate && S.kind !== "level" && n > 21) {
+    let s2 = 0, s1 = 0;
+    for (let i = n - 20; i < n; i++) { const x = d(i); s1 += x; s2 += x * x; }
+    vol = Math.sqrt(Math.max(0, s2 / 20 - (s1 / 20) ** 2)) * Math.sqrt(252) * 100;
+  }
+  S.st = {
+    last, lastT, prev: v[n - 2], hi, lo,
+    pos: hi > lo ? (last - lo) / (hi - lo) : 0.5,
+    newHigh: enough && last > phi, newLow: enough && last < plo,
+    z: isFinite(sd) && sd > 0 ? dl / sd : NaN,
+    d1: rate ? (last - v[n - 2]) * 100 : (last / v[n - 2] - 1) * 100,
+    m50: S.ma50[n - 1], m200, cross,
+    dist200: !isFinite(m200) ? NaN : rate ? (last - m200) * 100 : (last / m200 - 1) * 100,
+    vol
+  };
+}
+function startIdx(S, key) {
+  const { t } = S, lastT = t[t.length - 1];
+  const r = RANGES.find(x => x[0] === key)?.[1] ?? 182;
+  let day;
+  if (r === "ytd") { const y = dOf(lastT).getUTCFullYear(); day = Date.UTC(y, 0, 1) / DAY - 1; }
+  else day = lastT - r;
+  const i = bsearch(t, day);
+  return i < 0 ? 0 : i;
+}
+function chgFrom(S, i0) {
+  const n = S.v.length; if (n < 2 || i0 >= n - 1) return NaN;
+  return isRate(S) ? (S.v[n - 1] - S.v[i0]) * 100 : (S.v[n - 1] / S.v[i0] - 1) * 100;
+}
+const rangeChg = (S, key = state.range) => S.v.length > 1 ? chgFrom(S, startIdx(S, key)) : NaN;
+
+function build(json) {
+  const byId = new Map(), groups = [];
+  for (const g of json.groups) {
+    const ids = [];
+    for (const s of g.series) {
+      const raw = json.data[s.id];
+      const S = { ...s, group: g.id, kind: s.kind || "price", src: json.source[s.id] || "", missing: !raw };
+      if (raw) { Object.assign(S, decode(raw)); computeStats(S); }
+      byId.set(s.id, S); ids.push(s.id);
+    }
+    groups.push({ id: g.id, title: g.title, question: g.question, ids });
+  }
+  const rids = [];
+  for (const r of json.ratios) {
+    const A = byId.get(r.num), B = byId.get(r.den);
+    const S = { id: r.id, name: r.name, sym: `${A?.sym || r.num} ÷ ${B?.sym || r.den}`, kind: "ratio", question: r.question, group: "ratios", num: r.num, den: r.den, src: "比值（本页计算）" };
+    if (A && B && !A.missing && !B.missing) { Object.assign(S, ratioSeries(A, B)); S.missing = S.t.length < 30; if (!S.missing) computeStats(S); }
+    else S.missing = true;
+    byId.set(r.id, S); rids.push(r.id);
+  }
+  groups.splice(groups.findIndex(g => g.id === "sectors") + 1, 0,
+    { id: "ratios", title: "比值图", question: "两条价格相除，看相对强弱：资金在偏好什么，股价在为经济投票什么。", ids: rids });
+  const spy = byId.get("SPY");
+  const refT = spy && !spy.missing ? spy.st.lastT : Math.max(...[...byId.values()].filter(s => !s.missing).map(s => s.st.lastT));
+  for (const S of byId.values()) if (!S.missing) S.stale = S.st.lastT < refT - 4;
+  DB = { json, byId, groups, refT };
+}
+
+/* ---------- sparkline ---------- */
+const SW = 240, SH = 64;
+function sparkPts(S, i0) {
+  const n = S.v.length, cnt = n - i0, step = Math.max(1, Math.ceil(cnt / 140));
+  const idx = [];
+  for (let i = i0; i < n; i += step) idx.push(i);
+  if (idx[idx.length - 1] !== n - 1) idx.push(n - 1);
+  let mn = Infinity, mx = -Infinity;
+  for (let i = i0; i < n; i++) { mn = Math.min(mn, S.v[i]); mx = Math.max(mx, S.v[i]); if (state.ma && isFinite(S.ma200[i])) { mn = Math.min(mn, S.ma200[i]); mx = Math.max(mx, S.ma200[i]); } }
+  if (mx === mn) { mx += 1; mn -= 1; }
+  const t0 = S.t[i0], t1 = S.t[n - 1], pad = 4;
+  const X = t => ((t - t0) / Math.max(1, t1 - t0)) * (SW - 8) + 2;
+  const Y = v => pad + (1 - (v - mn) / (mx - mn)) * (SH - pad * 2);
+  return { idx, X, Y, mn, mx };
+}
+function sparkSVG(S) {
+  const i0 = startIdx(S, state.range), n = S.v.length;
+  const { idx, X, Y } = sparkPts(S, i0);
+  const line = idx.map((i, k) => (k ? "L" : "M") + X(S.t[i]).toFixed(1) + " " + Y(S.v[i]).toFixed(1)).join("");
+  const area = line + `L${X(S.t[n - 1]).toFixed(1)} ${SH}L${X(S.t[i0]).toFixed(1)} ${SH}Z`;
+  let ma = "";
+  if (state.ma) {
+    const p = idx.filter(i => isFinite(S.ma200[i])).map((i, k) => (k ? "L" : "M") + X(S.t[i]).toFixed(1) + " " + Y(S.ma200[i]).toFixed(1)).join("");
+    if (p) ma = `<path class="ma" d="${p}"/>`;
+  }
+  const c = rangeChg(S), col = cls(S, c) === "down" ? "var(--loss)" : cls(S, c) === "up" ? "var(--gain)" : "var(--ink-3)";
+  const by = Y(S.v[i0]).toFixed(1);
+  return `<svg class="spark" viewBox="0 0 ${SW} ${SH}" aria-hidden="true">
+    <line class="base" x1="2" x2="${SW - 6}" y1="${by}" y2="${by}"/>
+    <path class="area" d="${area}"/>${ma}<path class="ln" d="${line}"/>
+    <circle class="end" cx="${X(S.t[n - 1]).toFixed(1)}" cy="${Y(S.v[n - 1]).toFixed(1)}" r="3.6" fill="${col}"/>
+    <g class="hovg" hidden><line class="hovl" y1="0" y2="${SH}"/><circle class="hov" r="3"/></g>
+  </svg>`;
+}
+
+/* ---------- cards ---------- */
+function badges(S) {
+  if (S.missing) return "";
+  const b = [], st = S.st;
+  if (st.newHigh) b.push(`<span class="pill hi">▲ 52周新高</span>`);
+  if (st.newLow) b.push(`<span class="pill lo">▼ 52周新低</span>`);
+  if (isFinite(st.z) && Math.abs(st.z) >= 2) b.push(`<span class="pill z" title="今日变动 ÷ 过去60日波动">⚡ ${st.z > 0 ? "+" : "−"}${Math.abs(st.z).toFixed(1)}σ</span>`);
+  if (st.cross) b.push(`<span class="pill ma">${st.cross === "up" ? "上穿" : "跌破"}200日线</span>`);
+  if (S.stale) b.push(`<span class="pill stale">截至 ${fmtDate(st.lastT, "md")}</span>`);
+  return b.join("");
+}
+function card(S) {
+  const pinned = state.pins.includes(S.id);
+  const star = `<button class="star" data-pin="${esc(S.id)}" aria-pressed="${pinned}" aria-label="${pinned ? "取消关注" : "加入关注"} ${esc(S.name)}">${pinned ? "★" : "☆"}</button>`;
+  const q = S.kind === "ratio" ? `<div class="c-q">${esc(S.question)}</div>` : S.note ? `<div class="c-q">${esc(S.note)}</div>` : "";
+  if (S.missing) {
+    return `<div class="card missing" data-id="${esc(S.id)}"><div class="c-top"><div class="c-name">${esc(S.name)}<span class="c-sym">${esc(S.sym || "")}</span></div>${star}</div>${q}<div class="note">暂无数据，下次更新会自动重试。</div></div>`;
+  }
+  const st = S.st, c = rangeChg(S);
+  const pos = Math.min(1, Math.max(0, st.pos)) * 100;
+  return `<div class="card" role="button" tabindex="0" data-id="${esc(S.id)}" aria-label="${esc(S.name)} 详情">
+    <div class="c-top"><div class="c-name">${esc(S.name)}<span class="c-sym">${esc(S.sym || S.id)}</span></div>${star}</div>
+    ${q}
+    <div class="c-vals"><span class="c-last">${fmtV(S, st.last)}</span><span class="c-chg ${cls(S, c)}" title="${state.range} 变动">${fmtC(S, c)}</span></div>
+    ${sparkSVG(S)}
+    <div class="readout" data-d1="${esc(fmtD1(S))}">${fmtD1(S)}</div>
+    <div class="c-foot">
+      <div class="r52" title="52周区间位置"><span>${fmtV(S, st.lo)}</span><span class="trk"><span class="dot" style="left:${pos.toFixed(1)}%"></span></span><span>${fmtV(S, st.hi)}</span></div>
+    </div>
+    ${badges(S) ? `<div class="c-foot">${badges(S)}</div>` : ""}
+  </div>`;
+}
+function sortIds(ids) {
+  const arr = ids.map(id => DB.byId.get(id));
+  const key = S => S.missing ? -Infinity : state.sort === "pos" ? S.st.pos : rangeChg(S);
+  if (state.sort === "chg-desc" || state.sort === "pos") arr.sort((a, b) => key(b) - key(a));
+  else if (state.sort === "chg-asc") arr.sort((a, b) => (a.missing ? Infinity : key(a)) - (b.missing ? Infinity : key(b)));
+  return arr;
+}
+function matches(S) {
+  if (!state.q) return true;
+  const q = state.q.toLowerCase();
+  return [S.name, S.id, S.sym].some(x => String(x || "").toLowerCase().includes(q));
+}
+
+/* ---------- scan panels ---------- */
+function scanItem(S, right, pill) {
+  return `<li><button data-open="${esc(S.id)}"><span class="nm">${esc(S.name)}<small>${esc(S.id)}</small></span><span class="num">${right}</span><span>${pill || ""}</span></button></li>`;
+}
+function renderScan() {
+  const all = [...DB.byId.values()].filter(S => !S.missing && !S.stale);
+  const hilo = all.filter(S => S.st.newHigh || S.st.newLow).sort((a, b) => (b.st.newHigh - a.st.newHigh) || Math.abs(b.st.d1) - Math.abs(a.st.d1));
+  const big = all.filter(S => isFinite(S.st.z) && Math.abs(S.st.z) >= 2).sort((a, b) => Math.abs(b.st.z) - Math.abs(a.st.z));
+  const cross = all.filter(S => S.st.cross);
+  const li = (arr, f) => arr.length ? arr.map(f).join("") : `<li class="empty">今天没有</li>`;
+  const div = (DB.json.divergences || []).map(d => {
+    const A = DB.byId.get(d.a), B = DB.byId.get(d.b);
+    if (!A || !B || A.missing || B.missing) return "";
+    const ca = rangeChg(A), cb = rangeChg(B);
+    const sg = (S, c) => { const th = isRate(S) ? 3 : 0.5; return Math.abs(c) < th ? 0 : Math.sign(c); };
+    const sa = sg(A, ca), sb = sg(B, cb);
+    let st;
+    if (!sa || !sb) st = `<span class="pill ok">持平</span>`;
+    else { const agree = d.expect === "same" ? sa === sb : sa !== sb; st = agree ? `<span class="pill ok">一致</span>` : `<span class="pill warn">背离</span>`; }
+    return `<li><button class="dv" data-open="${esc(d.a)}" title="${esc(d.label)}"><span class="nm">${esc(d.label)}</span><span class="num ${cls(A, ca)}">${fmtC(A, ca, 1)}</span><span class="num ${cls(B, cb)}">${fmtC(B, cb, 1)}</span><span>${st}</span></button></li>`;
+  }).join("");
+  return `<section class="scan" aria-label="今日异动">
+    <div class="panel"><h3>52 周新高 / 新低</h3><p class="sub">收盘突破过去一年的最高或最低</p><ul class="plist">${li(hilo, S => scanItem(S, fmtC(S, S.st.d1), S.st.newHigh ? `<span class="pill hi">新高</span>` : `<span class="pill lo">新低</span>`))}</ul></div>
+    <div class="panel"><h3>异常波动</h3><p class="sub">今日变动超过过去 60 日波动的 2 倍</p><ul class="plist">${li(big, S => scanItem(S, fmtC(S, S.st.d1), `<span class="pill z">${S.st.z > 0 ? "+" : "−"}${Math.abs(S.st.z).toFixed(1)}σ</span>`))}</ul></div>
+    <div class="panel"><h3>200 日均线突破</h3><p class="sub">最近 3 个交易日内上穿或跌破</p><ul class="plist">${li(cross, S => scanItem(S, fmtC(S, S.st.dist200, 1), `<span class="pill ma">${S.st.cross === "up" ? "上穿" : "跌破"}</span>`))}</ul></div>
+    <div class="panel"><h3>背离观察 · ${esc(state.range)}</h3><p class="sub">本该同向（或反向）的两组走势，按所选区间比较</p><ul class="plist">${div || `<li class="empty">数据不足</li>`}</ul></div>
+  </section>`;
+}
+
+/* ---------- page render ---------- */
+function render() {
+  const main = $("#main");
+  let html = renderScan();
+  const pinIds = state.pins.filter(id => DB.byId.has(id));
+  const groups = (pinIds.length ? [{ id: "pins", title: "我的关注", question: "点卡片右上角的 ☆ 加入或移除", ids: pinIds }] : []).concat(DB.groups);
+  let shown = 0;
+  for (const g of groups) {
+    const arr = sortIds(g.ids).filter(matches);
+    if (!arr.length) continue;
+    shown += arr.length;
+    html += `<section class="group" id="${g.id}"><div class="ghead"><h2>${esc(g.title)}</h2><p>${esc(g.question)}</p><span class="count num">${arr.length} 张</span></div><div class="grid">${arr.map(card).join("")}</div></section>`;
+  }
+  if (!shown) html += `<div class="state">没有匹配"${esc(state.q)}"的图。</div>`;
+  main.innerHTML = html;
+  $("#jump").innerHTML = groups.map(g => `<a href="#${g.id}">${esc(g.title)}</a>`).join("");
+}
+function renderChrome() {
+  $("#ranges").innerHTML = RANGES.map(([k]) => `<button data-range="${k}" aria-pressed="${k === state.range}">${k}</button>`).join("");
+  $("#maToggle").setAttribute("aria-pressed", state.ma);
+  $("#udToggle").setAttribute("aria-pressed", state.cn);
+  $("#udToggle").textContent = state.cn ? "红涨绿跌" : "绿涨红跌";
+  document.documentElement.dataset.updown = state.cn ? "cn" : "us";
+  $("#sort").value = state.sort;
+}
+function renderStamp() {
+  const j = DB.json;
+  const upd = new Date(j.updated).toLocaleString("zh-CN", { timeZone: "Asia/Hong_Kong", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
+  const n = [...DB.byId.values()].filter(s => !s.missing).length;
+  $("#stamp").innerHTML = `美股收盘日 <b class="num">${fmtDate(DB.refT)}</b><br>更新于 <span class="num">${upd}</span>（香港时间）· <span class="num">${n}</span> 张图`;
+  const miss = j.missing || [];
+  const foot = $("#foot");
+  foot.hidden = false;
+  foot.innerHTML = `
+    <p><b>数据来源：</b>Yahoo Finance（股票、ETF、指数、期货、汇率、加密、美债收益率）与 FRED（2年期、实际利率、通胀预期、SOFR、信用利差）。每天香港时间早上 6:35 左右自动更新一次。期货为连续主力合约，部分商品（铁矿石、动力煤、铀）流动性较低，必要时用替代标的，详情页会注明实际来源。</p>
+    <p><b>读法：</b>小图终点圆点的颜色代表所选区间的涨跌；虚线横线是区间起点水平。利率类以 bp 计变动。σ = 今日变动 ÷ 过去 60 个交易日日变动的标准差。52 周新高 / 新低按收盘价计。</p>
+    ${miss.length ? `<p><b>本次未取到：</b>${miss.map(m => esc(m.name) + `（${esc(m.sym)}）`).join("、")}。</p>` : ""}
+    <p class="note">仅供研究参考，不构成投资建议。</p>`;
+}
+
+/* ---------- detail dialog ---------- */
+const dlg = $("#dlg");
+let cur = null; // {S, cmp, maOn}
+function openDetail(id, extra) {
+  const S = typeof id === "string" ? DB.byId.get(id) : id;
+  if (!S || S.missing) return;
+  cur = { S, cmp: extra?.cmp || "", ma50: true, ma200: true };
+  drawDetail();
+  if (!dlg.open) dlg.showModal();
+}
+function seriesOptions(exclude, filter) {
+  const opts = [];
+  for (const g of DB.groups) {
+    const items = g.ids.map(i => DB.byId.get(i)).filter(s => s && !s.missing && s.id !== exclude && (!filter || filter(s)));
+    if (items.length) opts.push(`<optgroup label="${esc(g.title)}">${items.map(s => `<option value="${esc(s.id)}">${esc(s.name)} · ${esc(s.id)}</option>`).join("")}</optgroup>`);
+  }
+  return opts.join("");
+}
+function drawDetail() {
+  const { S } = cur, st = S.st, c = rangeChg(S);
+  const priceLike = !isRate(S);
+  const C = cur.cmp ? DB.byId.get(cur.cmp) : null;
+  const mixed = C && isRate(C) !== isRate(S);
+  const tiles = [["1D", st.d1]].concat([["1W", 7], ["1M", 30], ["3M", 91], ["6M", 182], ["YTD", "ytd"], ["1Y", 365]].map(([k, r]) => {
+    const i = k === "YTD" ? startIdx(S, "YTD") : Math.max(0, bsearch(S.t, st.lastT - r));
+    return [k, chgFrom(S, i)];
+  }));
+  const fromHi = isRate(S) ? (st.last - st.hi) * 100 : (st.last / st.hi - 1) * 100;
+  $("#dbody").innerHTML = `
+    <div class="d-head">
+      <div>
+        <h2 id="dTitle">${esc(S.name)}</h2>
+        <div class="meta">${esc(S.sym || S.id)} · ${esc(S.src)} · 最新 ${fmtDate(st.lastT)}</div>
+        ${S.question || S.note ? `<div class="q">${esc(S.question || S.note)}</div>` : ""}
+      </div>
+      <button class="close" id="dClose">关闭</button>
+    </div>
+    <div class="d-big"><span class="c-last">${fmtV(S, st.last)}</span><span class="c-chg ${cls(S, c)}">${state.range} ${fmtC(S, c)}</span>${badges(S)}</div>
+    <div class="d-ctl">
+      <div class="seg" role="group" aria-label="时间区间">${RANGES.map(([k]) => `<button data-drange="${k}" aria-pressed="${k === state.range}">${k}</button>`).join("")}</div>
+      <button class="toggle" id="dMa50" aria-pressed="${cur.ma50}">50日线</button>
+      <button class="toggle" id="dMa200" aria-pressed="${cur.ma200}">200日线</button>
+      <label class="ctl">叠加对比
+        <select id="dCmp"><option value="">无</option>${seriesOptions(S.id)}</select>
+      </label>
+      ${priceLike ? `<label class="ctl">做成比值 ÷
+        <select id="dRatio"><option value="">选择分母</option>${seriesOptions(S.id, s => !isRate(s) && s.kind !== "ratio")}</select>
+      </label>` : ""}
+    </div>
+    <div class="legend" id="dLegend"></div>
+    <div class="chartbox" id="dChart"></div>
+    ${mixed ? `<div class="note">两者单位不同（利率 vs 价格），无法共用一根纵轴。可改用"做成比值"，或分别打开查看。</div>` : ""}
+    <dl class="stats">
+      ${tiles.map(([k, v]) => `<div><dt>${k}</dt><dd class="${cls(S, v)}">${fmtC(S, v)}</dd></div>`).join("")}
+      <div><dt>52周高</dt><dd>${fmtV(S, st.hi)}</dd></div>
+      <div><dt>52周低</dt><dd>${fmtV(S, st.lo)}</dd></div>
+      <div><dt>距52周高点</dt><dd class="${cls(S, fromHi)}">${fmtC(S, fromHi, 1)}</dd></div>
+      <div><dt>相对200日线</dt><dd class="${cls(S, st.dist200)}">${fmtC(S, st.dist200, 1)}</dd></div>
+      <div><dt>相对50日线</dt><dd>${isFinite(st.m50) ? fmtC(S, isRate(S) ? (st.last - st.m50) * 100 : (st.last / st.m50 - 1) * 100, 1) : "—"}</dd></div>
+      ${isFinite(st.vol) ? `<div><dt>20日年化波动</dt><dd>${st.vol.toFixed(1)}%</dd></div>` : ""}
+    </dl>`;
+  $("#dCmp").value = cur.cmp;
+  drawBig(mixed ? null : C);
+}
+function niceTicks(mn, mx, n = 5) {
+  const span = mx - mn, raw = span / n, mag = 10 ** Math.floor(Math.log10(raw));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= n) || 10 * mag;
+  const out = []; for (let v = Math.ceil(mn / step) * step; v <= mx + step * 1e-9; v += step) out.push(+v.toFixed(10));
+  return out;
+}
+function drawBig(C) {
+  const S = cur.S, box = $("#dChart");
+  const W = Math.max(300, box.clientWidth || 800), H = W < 520 ? 250 : 360;
+  const m = { l: 8, r: 62, t: 12, b: 26 };
+  const i0 = startIdx(S, state.range), n = S.v.length;
+  const t0 = S.t[i0], t1 = S.t[n - 1];
+  // compare
+  let mode = "raw", cv = null, cI0 = 0;
+  if (C) {
+    cI0 = Math.max(0, bsearch(C.t, t0));
+    if (!isRate(S) && !isRate(C)) mode = "rebase";
+  }
+  const base = S.v[i0], cbase = C ? C.v[cI0] : 1;
+  const sv = i => mode === "rebase" ? S.v[i] / base * 100 : S.v[i];
+  const svm = (arr, i) => mode === "rebase" ? arr[i] / base * 100 : arr[i];
+  const cvf = i => mode === "rebase" ? C.v[i] / cbase * 100 : C.v[i];
+  const step = Math.max(1, Math.ceil((n - i0) / 700));
+  const idx = []; for (let i = i0; i < n; i += step) idx.push(i); if (idx[idx.length - 1] !== n - 1) idx.push(n - 1);
+  let cidx = [];
+  if (C) { const cn = C.v.length, cs = Math.max(1, Math.ceil((cn - cI0) / 700)); for (let i = cI0; i < cn; i += cs) if (C.t[i] <= t1) cidx.push(i); }
+  let mn = Infinity, mx = -Infinity;
+  const take = x => { if (isFinite(x)) { mn = Math.min(mn, x); mx = Math.max(mx, x); } };
+  for (let i = i0; i < n; i++) { take(sv(i)); if (cur.ma50 && mode !== "rebase") take(S.ma50[i]); if (cur.ma200 && mode !== "rebase") take(S.ma200[i]); }
+  for (const i of cidx) take(cvf(i));
+  if (mx === mn) { mx += 1; mn -= 1; }
+  const padv = (mx - mn) * 0.06; mn -= padv; mx += padv;
+  const X = t => m.l + (t - t0) / Math.max(1, t1 - t0) * (W - m.l - m.r);
+  const Y = v => m.t + (1 - (v - mn) / (mx - mn)) * (H - m.t - m.b);
+  const path = (ids, f, tt) => { let p = "", pen = false; for (const i of ids) { const y = f(i); if (!isFinite(y)) { pen = false; continue; } p += (pen ? "L" : "M") + X(tt[i]).toFixed(1) + " " + Y(y).toFixed(1); pen = true; } return p; };
+  const yt = niceTicks(mn, mx, H < 300 ? 4 : 6);
+  const span = t1 - t0, xs = [], xn = W < 520 ? 4 : 6;
+  for (let k = 0; k <= xn; k++) xs.push(Math.round(t0 + span * k / xn));
+  const xfmt = span <= 200 ? "md" : "ym";
+  const fy = v => mode === "rebase" ? v.toFixed(0) : isRate(S) ? v.toFixed(2) + "%" : fmtV(S, v);
+  const mainP = path(idx, sv, S.t);
+  const areaP = mode === "rebase" ? "" : mainP + `L${X(t1).toFixed(1)} ${H - m.b}L${X(t0).toFixed(1)} ${H - m.b}Z`;
+  const showMA = mode !== "rebase";
+  box.innerHTML = `<svg class="chart" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(S.name)} 走势图">
+    <g class="grid">${yt.map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/>`).join("")}</g>
+    ${yt.map(v => `<text x="${W - m.r + 6}" y="${(Y(v) + 4).toFixed(1)}">${fy(v)}</text>`).join("")}
+    ${xs.map((t, k) => `<text x="${X(t).toFixed(1)}" y="${H - 8}" text-anchor="${k === 0 ? "start" : k === xs.length - 1 ? "end" : "middle"}">${fmtDate(t, xfmt)}</text>`).join("")}
+    ${areaP ? `<path class="mainarea" d="${areaP}"/>` : ""}
+    ${showMA && cur.ma200 ? `<path class="ma200" d="${path(idx, i => S.ma200[i], S.t)}"/>` : ""}
+    ${showMA && cur.ma50 ? `<path class="ma50" d="${path(idx, i => S.ma50[i], S.t)}"/>` : ""}
+    ${C ? `<path class="cmp" d="${path(cidx, cvf, C.t)}"/>` : ""}
+    <path class="main" d="${mainP}"/>
+    <g id="hov" hidden><line class="xh" y1="${m.t}" y2="${H - m.b}"/><circle class="hd" r="4.5" fill="var(--line)"/>${C ? `<circle class="hd hc" r="4.5" fill="var(--compare)"/>` : ""}</g>
+    <rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent" id="hit"/>
+  </svg><div class="tip" id="tip" hidden></div>`;
+  const leg = [`<span><i style="border-color:var(--line)"></i>${esc(S.name)}${mode === "rebase" ? "（起点=100）" : ""}</span>`];
+  if (C) leg.push(`<span><i style="border-color:var(--compare)"></i>${esc(C.name)}${mode === "rebase" ? "（起点=100）" : ""}</span>`);
+  if (showMA && cur.ma50) leg.push(`<span><i style="border-color:var(--ma50);border-top-style:dashed"></i>50日线</span>`);
+  if (showMA && cur.ma200) leg.push(`<span><i style="border-color:var(--ma200);border-top-style:dashed"></i>200日线</span>`);
+  $("#dLegend").innerHTML = leg.join("");
+  // hover
+  const svg = box.querySelector("svg"), hov = $("#hov", svg), tip = $("#tip", box);
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (W / r.width);
+    const day = t0 + (x - m.l) / (W - m.l - m.r) * (t1 - t0);
+    let i = bsearch(S.t, day); if (i < i0) i = i0; if (i < n - 1 && Math.abs(S.t[i + 1] - day) < Math.abs(S.t[i] - day)) i++;
+    const px = X(S.t[i]);
+    hov.hidden = false;
+    hov.querySelector(".xh").setAttribute("x1", px); hov.querySelector(".xh").setAttribute("x2", px);
+    const d0 = hov.querySelector("circle"); d0.setAttribute("cx", px); d0.setAttribute("cy", Y(sv(i)));
+    let rows = `<div>${fmtDate(S.t[i])}</div><div><span class="k" style="background:var(--line)"></span>${esc(S.name)} <b>${mode === "rebase" ? sv(i).toFixed(1) + " · " : ""}${fmtV(S, S.v[i])}</b></div>`;
+    if (C) {
+      const j = bsearch(C.t, S.t[i]);
+      if (j >= cI0) {
+        const hc = hov.querySelector(".hc"); hc.setAttribute("cx", X(C.t[j])); hc.setAttribute("cy", Y(cvf(j)));
+        rows += `<div><span class="k" style="background:var(--compare)"></span>${esc(C.name)} <b>${mode === "rebase" ? cvf(j).toFixed(1) + " · " : ""}${fmtV(C, C.v[j])}</b></div>`;
+      }
+    }
+    if (showMA && cur.ma50 && isFinite(S.ma50[i])) rows += `<div><span class="k" style="background:var(--ma50)"></span>50日线 ${fmtV(S, S.ma50[i])}</div>`;
+    if (showMA && cur.ma200 && isFinite(S.ma200[i])) rows += `<div><span class="k" style="background:var(--ma200)"></span>200日线 ${fmtV(S, S.ma200[i])}</div>`;
+    tip.innerHTML = rows; tip.hidden = false;
+    const scale = r.width / W, tx = px * scale, tw = tip.offsetWidth;
+    tip.style.left = (tx + 14 + tw > r.width ? tx - 14 - tw : tx + 14) + "px";
+    tip.style.top = Math.max(0, Y(sv(i)) * scale - tip.offsetHeight - 10) + "px";
+  };
+  const leave = () => { hov.hidden = true; tip.hidden = true; };
+  const hit = $("#hit", svg);
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerdown", move);
+  hit.addEventListener("pointerleave", leave);
+}
+
+/* ---------- events ---------- */
+function setRange(k) { state.range = k; store.set("range", k); renderChrome(); render(); if (dlg.open) drawDetail(); }
+document.addEventListener("click", e => {
+  const r = e.target.closest("[data-range]"); if (r) return setRange(r.dataset.range);
+  const dr = e.target.closest("[data-drange]"); if (dr) return setRange(dr.dataset.drange);
+  const p = e.target.closest("[data-pin]");
+  if (p) {
+    e.stopPropagation();
+    const id = p.dataset.pin;
+    state.pins = state.pins.includes(id) ? state.pins.filter(x => x !== id) : [...state.pins, id];
+    store.set("pins", state.pins); render(); return;
+  }
+  const o = e.target.closest("[data-open]"); if (o) return openDetail(o.dataset.open);
+  const c = e.target.closest(".card[data-id]"); if (c && !c.classList.contains("missing")) return openDetail(c.dataset.id);
+  if (e.target.id === "dClose") return dlg.close();
+  if (e.target.id === "dMa50") { cur.ma50 = !cur.ma50; return drawDetail(); }
+  if (e.target.id === "dMa200") { cur.ma200 = !cur.ma200; return drawDetail(); }
+});
+document.addEventListener("change", e => {
+  if (e.target.id === "dCmp") { cur.cmp = e.target.value; drawDetail(); }
+  if (e.target.id === "dRatio" && e.target.value) {
+    const A = cur.S, B = DB.byId.get(e.target.value);
+    const R = { id: `${A.id}/${B.id}`, name: `${A.name} ÷ ${B.name}`, sym: `${A.id} ÷ ${B.id}`, kind: "ratio", src: "比值（本页计算）", question: "自定义比值：上行 = 分子相对分母走强", ...ratioSeries(A, B) };
+    if (R.t.length > 30) { computeStats(R); openDetail(R); }
+  }
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches?.(".card[role=button]")) { e.preventDefault(); openDetail(e.target.dataset.id); }
+});
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+$("#maToggle").addEventListener("click", () => { state.ma = !state.ma; store.set("ma", state.ma); renderChrome(); render(); });
+$("#udToggle").addEventListener("click", () => { state.cn = !state.cn; store.set("cn", state.cn); renderChrome(); render(); if (dlg.open) drawDetail(); });
+$("#sort").addEventListener("change", e => { state.sort = e.target.value; store.set("sort", state.sort); render(); });
+let qT; $("#q").addEventListener("input", e => { clearTimeout(qT); qT = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 120); });
+// sparkline hover readout
+document.addEventListener("pointermove", e => {
+  const svg = e.target.closest?.(".spark"); if (!svg) return;
+  const cardEl = svg.closest(".card"), S = DB.byId.get(cardEl.dataset.id); if (!S || S.missing) return;
+  const i0 = startIdx(S, state.range), { X, Y } = sparkPts(S, i0);
+  const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * (SW / r.width);
+  const day = S.t[i0] + (x - 2) / (SW - 8) * (S.t[S.v.length - 1] - S.t[i0]);
+  let i = Math.max(i0, bsearch(S.t, day));
+  const g = svg.querySelector(".hovg"); g.hidden = false;
+  const px = X(S.t[i]);
+  g.querySelector("line").setAttribute("x1", px); g.querySelector("line").setAttribute("x2", px);
+  g.querySelector("circle").setAttribute("cx", px); g.querySelector("circle").setAttribute("cy", Y(S.v[i]));
+  const lastV = S.v[S.v.length - 1];
+  const since = isRate(S) ? (lastV - S.v[i]) * 100 : (lastV / S.v[i] - 1) * 100;
+  const ro = cardEl.querySelector(".readout"); ro.classList.add("live");
+  ro.textContent = `${fmtDate(S.t[i], "md")}  ${fmtV(S, S.v[i])}  至今 ${fmtC(S, since)}`;
+});
+document.addEventListener("pointerout", e => {
+  const svg = e.target.closest?.(".spark"); if (!svg || svg.contains(e.relatedTarget)) return;
+  const g = svg.querySelector(".hovg"); if (g) g.hidden = true;
+  const ro = svg.closest(".card")?.querySelector(".readout"); if (ro) { ro.classList.remove("live"); ro.textContent = ro.dataset.d1 || ""; }
+});
+let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (dlg.open) drawBig(cur.cmp ? DB.byId.get(cur.cmp) : null); }, 150); });
+
+/* ---------- boot ---------- */
+renderChrome();
+fetch("data/market.json", { cache: "no-cache" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(j => { build(j); renderStamp(); render(); if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView(); })
+  .catch(err => {
+    $("#state").textContent = "还没有数据。第一次自动更新完成后（几分钟内）刷新本页即可。";
+    $("#stamp").textContent = "";
+    console.error(err);
+  });
+</script>
+</body>
+</html>
