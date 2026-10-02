@@ -1,0 +1,155 @@
+{
+ "symbols": {
+  "XTXC.DE": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXC.MI": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXC.F": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXC.SG": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXC.SW": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXC.L": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "DXSQ.DE": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "DXSQ.F": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXE.DE": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXE.MI": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXE.F": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTXE.SW": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "XTC5.DE": {
+   "rows": 65,
+   "last": "2026-09-30",
+   "close": 28.440000534057617
+  },
+  "XTC5.MI": {
+   "rows": 66,
+   "last": "2026-10-02",
+   "close": 28.309999465942383
+  },
+  "DXST.DE": {
+   "rows": 0,
+   "last": null,
+   "close": null
+  },
+  "0DNZ.L": {
+   "rows": 12,
+   "last": "2026-09-30",
+   "close": 28.30299949645996
+  }
+ },
+ "search": {
+  "iTraxx Crossover": [
+   {
+    "symbol": "DXST.SG",
+    "shortname": "Xtrackers II iTraxx Crossover S",
+    "longname": null,
+    "exchange": "STU",
+    "quoteType": "MUTUALFUND"
+   },
+   {
+    "symbol": "0DNZ.L",
+    "shortname": "DB X-TRACKERS II ITRAXX CROSSOV",
+    "longname": "Xtrackers II iTraxx Crossover Short Daily Swap UCITS ETF 1C",
+    "exchange": "LSE",
+    "quoteType": "ETF"
+   },
+   {
+    "symbol": "XTC5.DE",
+    "shortname": "Xtr.II iTraxx Cross.Sh.Da.SwapI",
+    "longname": "Xtrackers II iTraxx Crossover Short Daily Swap UCITS ETF 1C",
+    "exchange": "GER",
+    "quoteType": "ETF"
+   },
+   {
+    "symbol": "XTC5.MI",
+    "shortname": "XTRAC II ITR CROSS SH DAY SWAP ",
+    "longname": "Xtrackers II iTraxx Crossover Short Daily Swap UCITS ETF 1C",
+    "exchange": "MIL",
+    "quoteType": "ETF"
+   }
+  ],
+  "iTraxx Europe": [],
+  "CDX": [
+   {
+    "symbol": "CDX",
+    "shortname": "Simplify High Yield ETF",
+    "longname": "Simplify High Yield ETF",
+    "exchange": "PCX",
+    "quoteType": "ETF"
+   },
+   {
+    "symbol": "CDXS",
+    "shortname": "Codexis, Inc.",
+    "longname": "Codexis, Inc.",
+    "exchange": "NMS",
+    "quoteType": "EQUITY"
+   },
+   {
+    "symbol": "CDXUX",
+    "shortname": null,
+    "longname": "CI Global Infrastructure Private Pool (Series I) NL (491570A2)",
+    "exchange": "NAS",
+    "quoteType": "MUTUALFUND"
+   },
+   {
+    "symbol": "CDXR-USD",
+    "shortname": "Codex (codexblockchain.com) USD",
+    "longname": "Codex (codexblockchain.com) USD",
+    "exchange": "CCC",
+    "quoteType": "CRYPTOCURRENCY"
+   },
+   {
+    "symbol": "CDXJX",
+    "shortname": null,
+    "longname": "CI Global Infrastructure Fund Series B DSC (430750A2)",
+    "exchange": "NAS",
+    "quoteType": "MUTUALFUND"
+   }
+  ],
+  "Markit CDX": []
+ }
+}
